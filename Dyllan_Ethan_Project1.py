@@ -29,7 +29,8 @@ def convert_float_binary(n):
     for i in range(100):
         if(len(str((convert_to_decimal(right)) * 2).split(".")) > 1):
             left, right = str((convert_to_decimal(right)) * 2).split(".")
-        else: # break if exact
+        # break if exact
+        else: 
             break
         right = int(right)
         returnValue += left
@@ -42,12 +43,12 @@ def calculate_sign_bit(n):
     if n < 0:
         return 1
     return 0
-        
 
 # Converts binary to mantissa/fraction and exponent
 def normalize_binary(bin):
     exponent = bin.index(".") - 1 
-    mantissa = bin.replace(".", "")[1:] # all chars after first with '.' removed
+    # all chars after first with '.' removed
+    mantissa = bin.replace(".", "")[1:]
     return str(exponent), mantissa
 
 
@@ -58,6 +59,9 @@ def calculate_exponent_biased(expo):
     
 
 def IEEE754_rep(sign, biased_expo, fraction):
+    # append 0's if fraction does not use all 23 bits
+    for i in range(len(fraction), 22): 
+        fraction += "0"
     return (str(sign) + "-" + biased_expo + "-" + fraction)
 
 def main():
