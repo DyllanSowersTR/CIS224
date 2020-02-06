@@ -15,8 +15,15 @@ def convert_float_binary(n):
     left = int(left)
     right = int(right)
 
-    # Convert left portion to binary and remove "0b", append "." for decimal
-    returnValue = bin(left).lstrip("0b") + "."
+    # Convert left portion to binary and remove "0b"
+    returnValue = bin(left).lstrip("-0b")
+
+    # Return if right portion is 0 (n is a whole number)
+    if right == 0:
+        return returnValue
+    
+    # append "." for decimal
+    returnValue += "."
 
     # Convert to precision 100
     for i in range(100):
@@ -27,7 +34,6 @@ def convert_float_binary(n):
         right = int(right)
         returnValue += left
 
-        
     return returnValue
 
 
@@ -40,21 +46,41 @@ def calculate_sign_bit(n):
 
 # Converts binary to mantissa/fraction and exponent
 def normalize_binary(bin):
-    return
+    exponent = bin.index(".") - 1 
+    mantissa = bin.replace(".", "")[1:] # all chars after first with '.' removed
+    return str(exponent), mantissa
 
-def calculate_biased_exponent(expo):
-    return
+
+def calculate_exponent_biased(expo):
+    exponentBits = 8
+    expo = float(expo)
+    return convert_float_binary(math.pow(2, exponentBits - 1) - 1 + expo)
+    
 
 def IEEE754_rep(sign, biased_expo, fraction):
-    return
+    return (str(sign) + "-" + biased_expo + "-" + fraction)
 
 def main():
     floatNum = -85.125
-    print("{:f} converted to binary is {}".format(floatNum, convert_float_binary(floatNum)))
+    binary = convert_float_binary(floatNum)
+    signBit = calculate_sign_bit(floatNum)
+    exponent, mantissa = normalize_binary(binary)
+    biasedExponent = calculate_exponent_biased(exponent)
+    representationIEEE = IEEE754_rep(signBit, biasedExponent, mantissa)
 
-    if calculate_sign_bit(floatNum) == 0:
-        print("The sign is positive with a sign bit :", calculate_sign_bit(floatNum))
+    print("The Binary representation of the number is :", binary)
+
+    if signBit == 0:
+        print("The sign is positive with a sign bit :", signBit)
     else:
-        print("The sign is negative with a sign bit :", calculate_sign_bit(floatNum))
+        print("The sign is negative with a sign bit :", signBit)
+
+    print("Mantissa:", mantissa, "exponent:", exponent)
+
+    print("The exponent is", exponent, "and biased exponent is :", biasedExponent)
+
+    print("The IEEE 754 single precision for", floatNum, "is :", representationIEEE)
+
+
 
 main()
