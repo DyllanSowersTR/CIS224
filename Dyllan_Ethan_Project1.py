@@ -33,9 +33,10 @@ def convert_float_binary(n):
 
 # Calculates the sign bit
 def calculate_sign_bit(n):
-    if n > 0:
+    if n < 0:
         return 1
     return 0
+        
 
 # Converts binary to mantissa/fraction and exponent
 def normalize_binary(bin):
@@ -48,6 +49,12 @@ def IEEE754_rep(sign, biased_expo, fraction):
     return
 
 def main():
-    floatNum = 85.125
+    floatNum = -85.125
     print("{:f} converted to binary is {}".format(floatNum, convert_float_binary(floatNum)))
+
+    if calculate_sign_bit(floatNum) == 0:
+        print("The sign is positive with a sign bit :", calculate_sign_bit(floatNum))
+    else:
+        print("The sign is negative with a sign bit :", calculate_sign_bit(floatNum))
+
 main()
