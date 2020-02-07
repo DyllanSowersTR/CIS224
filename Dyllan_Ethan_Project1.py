@@ -2,6 +2,7 @@
 # CIS 224 Project 1
 
 import math;
+import struct;
 
 
 def convert_to_decimal(n):
@@ -63,7 +64,19 @@ def IEEE754_rep(sign, biased_expo, fraction):
     for i in range(len(fraction), 22): 
         fraction += "0"
     return (str(sign) + "-" + biased_expo + "-" + fraction)
+   
 
+def ieee_754_to_float(n):
+   
+    print("")
+    #Stripping the - from the IEEE binary representation
+    n = n.replace("-", "")
+    print("Testing the complete binary representation without dashes:", n)
+    print("")
+
+    convert = struct.unpack('f', struct.pack('i', int(n,2)))[0]
+    return convert
+    
 def main():
     floatNum = -85.125
     binary = convert_float_binary(floatNum)
@@ -73,6 +86,7 @@ def main():
     representationIEEE = IEEE754_rep(signBit, biasedExponent, mantissa)
 
     print("The Binary representation of the number is :", binary)
+    print("TESTING. The float number for the given binary is: ", ieee_754_to_float(representationIEEE))
 
     if signBit == 0:
         print("The sign is positive with a sign bit :", signBit)
