@@ -1,8 +1,8 @@
 # Dyllan Sowers and Ethan Curley
 # CIS 224 Project 1
 
-import math;
-import struct;
+import math
+import struct
 
 
 def convert_to_decimal(n):
@@ -52,11 +52,11 @@ def normalize_binary(bin):
     mantissa = bin.replace(".", "")[1:]
     return str(exponent), mantissa
 
-
+# Calculates the biansed 
 def calculate_exponent_biased(expo):
     exponentBits = 8
     expo = float(expo)
-    return convert_float_binary(math.pow(2, exponentBits - 1) - 1 + expo)
+    return convert_float_binary(pow(2, exponentBits - 1) - 1 + expo)
     
 
 def IEEE754_rep(sign, biased_expo, fraction):
@@ -67,15 +67,33 @@ def IEEE754_rep(sign, biased_expo, fraction):
    
 
 def ieee_754_to_float(n):
-   
-    print("")
-    #Stripping the - from the IEEE binary representation
+    #Stripping the - from the IEEE binary representation 
     n = n.replace("-", "")
-    print("Testing the complete binary representation without dashes:", n)
-    print("")
 
-    convert = struct.unpack('f', struct.pack('i', int(n,2)))[0]
-    return convert
+    signBit = int(n[0])
+    biasedExponent = n[1:9]
+    fraction = n[9:]
+    fraction = "1" + fraction
+    exponent = 0
+
+    for i in range(0, 7):
+        exponent += pow(2, int(7 - i)) * int(biasedExponent[i]) 
+
+    exponent -= 126
+    returnValue = 0
+
+    for i in range(0, exponent + 1):
+        returnValue += pow(2, int(exponent - i)) * int(fraction[i])
+
+    power = -1
+    for i in range(exponent + 1, len(fraction)):
+        returnValue += pow(2, power) * int(fraction[i])
+        power -= 1
+
+    if signBit == 1:
+        returnValue *= -1
+
+    return returnValue 
     
 def main():
     floatNum = -85.125
@@ -86,7 +104,6 @@ def main():
     representationIEEE = IEEE754_rep(signBit, biasedExponent, mantissa)
 
     print("The Binary representation of the number is :", binary)
-    print("TESTING. The float number for the given binary is: ", ieee_754_to_float(representationIEEE))
 
     if signBit == 0:
         print("The sign is positive with a sign bit :", signBit)
@@ -99,6 +116,6 @@ def main():
 
     print("The IEEE 754 single precision for", floatNum, "is :", representationIEEE)
 
-
+    print("The float number for the given binary is", ieee_754_to_float(representationIEEE))
 
 main()
