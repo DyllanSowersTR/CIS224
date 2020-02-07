@@ -49,7 +49,7 @@ def calculate_sign_bit(n):
 def normalize_binary(bin):
     exponent = bin.index(".") - 1 
     # all chars after first with '.' removed
-    mantissa = bin.replace(".", "")[1:]
+    mantissa = bin.replace(".", "")[1:23]
     return str(exponent), mantissa
 
 # Calculates the biansed 
@@ -96,7 +96,7 @@ def ieee_754_to_float(n):
     return returnValue 
     
 def main():
-    floatNum = -85.125
+    floatNum = -85.333
     binary = convert_float_binary(floatNum)
     signBit = calculate_sign_bit(floatNum)
     exponent, mantissa = normalize_binary(binary)
