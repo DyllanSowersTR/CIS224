@@ -17,7 +17,10 @@ def convert_float_binary(n):
     right = int(right)
 
     # Convert left portion to binary and remove "0b"
-    returnValue = bin(left).lstrip("-0b")
+    returnValue = ""
+    while(left / 2 != 0):
+        returnValue = str(left % 2) + returnValue
+        left = int(left / 2)
 
     # Return if right portion is 0 (n is a whole number)
     if right == 0:
@@ -37,7 +40,6 @@ def convert_float_binary(n):
         returnValue += left
 
     return returnValue
-
 
 # Calculates the sign bit
 def calculate_sign_bit(n):
