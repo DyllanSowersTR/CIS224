@@ -16,7 +16,7 @@ def convert_float_binary(n):
     left = int(left)
     right = int(right)
 
-    # Convert left portion to binary and remove "0b"
+    # Convert left portion to binary 
     returnValue = ""
     while(left / 2 != 0):
         returnValue = str(left % 2) + returnValue
